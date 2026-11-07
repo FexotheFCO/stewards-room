@@ -30,12 +30,19 @@ jobs:
       - name: Add the DaggerSquare font to the deployed copy
         env:
           DAGGERSQUARE_B64: ${{ secrets.DAGGERSQUARE_B64 }}
+        # The font is optional: whatever goes wrong here, the site is still deployed and falls back to Oswald.
         run: |
-          if [ -n "$DAGGERSQUARE_B64" ]; then
-            printf '%s' "$DAGGERSQUARE_B64" | base64 -d > site/fonts/DaggerSquare-Oblique.otf
-            echo "DaggerSquare added to the deployed site ($(wc -c < site/fonts/DaggerSquare-Oblique.otf) bytes)"
-          else
+          FONT=site/fonts/DaggerSquare-Oblique.otf
+          if [ -z "$DAGGERSQUARE_B64" ]; then
             echo "::warning::Secret DAGGERSQUARE_B64 is not set: the site falls back to Oswald for driver names."
+          else
+            # Drop whitespace, line breaks and quotes a copy-paste may have added, then decode.
+            if printf '%s' "$DAGGERSQUARE_B64" | tr -d '[:space:]"'"'" | base64 -d > "$FONT" 2>/dev/null && [ "$(head -c 4 "$FONT")" = "OTTO" ]; then
+              echo "DaggerSquare added to the deployed site ($(wc -c < "$FONT") bytes)"
+            else
+              rm -f "$FONT"
+              echo "::warning::Secret DAGGERSQUARE_B64 is not valid base64 of the .otf file: the site falls back to Oswald. Recreate the secret."
+            fi
           fi
 
       - uses: actions/configure-pages@v5
