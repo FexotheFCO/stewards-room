@@ -1,0 +1,48 @@
+name: Deploy site
+
+# Publishes ./site to GitHub Pages. The repository holds the site files; the only thing it does not hold is the
+# DaggerSquare font (its licence allows embedding it in a website but not publishing the file), which is kept as the
+# encrypted repository secret DAGGERSQUARE_B64 and written into the site folder here, only inside the deployed copy.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the DaggerSquare font to the deployed copy
+        env:
+          DAGGERSQUARE_B64: ${{ secrets.DAGGERSQUARE_B64 }}
+        run: |
+          if [ -n "$DAGGERSQUARE_B64" ]; then
+            printf '%s' "$DAGGERSQUARE_B64" | base64 -d > site/fonts/DaggerSquare-Oblique.otf
+            echo "DaggerSquare added to the deployed site ($(wc -c < site/fonts/DaggerSquare-Oblique.otf) bytes)"
+          else
+            echo "::warning::Secret DAGGERSQUARE_B64 is not set: the site falls back to Oswald for driver names."
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

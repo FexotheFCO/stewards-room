@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://media.formula1.com; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stewards' Room</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="overview-page">
+<main>
+  <header class="ov-hero">
+    <h1 class="ov-title"><span class="ov-f1">Formula<i>1</i></span><span class="ov-sr">Stewards Room</span><span class="ov-season" id="season"></span></h1>
+    <dl class="ov-stats" id="cards"></dl>
+  </header>
+  <div class="ov-lower">
+    <div class="typebox" id="typeBox"></div>
+    <h2 data-i18n="overview.drivers"></h2>
+    <div id="drivers"></div>
+  </div>
+</main>
+<script type="module" src="js/index.js"></script>
+</body>
+</html>

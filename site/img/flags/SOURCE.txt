@@ -1,0 +1,7 @@
+Flags from flag-icons by Panayiotis Lipiridis (MIT, see LICENSE-flag-icons.txt)
+https://github.com/lipis/flag-icons
+Tag v7.5.0, commit 7aa5b2bdddd570ece62c812c0cb588ccdc099e2e
+Only the SVG files of the countries used by the site were copied (flags/4x3 and flags/1x1), unmodified.
+Downloaded with git clone (no npm/pnpm, no install scripts, nothing executed) and checked for
+<script>, <style>, foreignObject, event handlers, external hrefs and entities before copying.
+SHA-256 of each file: SHA256SUMS.txt

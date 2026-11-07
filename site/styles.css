@@ -1,0 +1,318 @@
+:root {
+  --bg: #f6f6f4; --panel: #fff; --text: #1b1b1f; --muted: #66666e; --line: #deded9; --accent: #1f4fd8;
+  --pen: #c8372d; --rep: #d58a00; --none: #4a8b6a;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #131316; --panel: #1c1c21; --text: #ececf0; --muted: #9a9aa5; --line: #2e2e36; --accent: #7aa2ff;
+          --pen: #ff6b60; --rep: #f0b429; --none: #62c796; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.45 system-ui, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+a { color: var(--accent); }
+header.top { position: sticky; top: 0; z-index: 10; color: #ececf0; background: rgba(14, 14, 18, .78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, .12); padding: .6rem 1.2rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+header.top strong { font-size: 1.1rem; }
+header.top nav { display: flex; gap: 1rem; }
+header.top nav a { text-decoration: none; color: rgba(255, 255, 255, .65); padding: .2rem 0; border-bottom: 2px solid transparent; }
+header.top nav a:hover { color: #fff; }
+header.top nav a[aria-current="page"] { color: #fff; border-color: var(--accent); }
+main { box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; padding: 1.2rem; } /* width: 100% because body is a flex column (auto margins would shrink it to its content) */
+h1 { margin: .2rem 0 1rem; font-size: 1.5rem; }
+h2 { margin: 1.6rem 0 .6rem; font-size: 1.15rem; }
+.muted { color: var(--muted); font-size: .88rem; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--line); background: var(--panel); object-fit: cover; object-position: top; vertical-align: middle; margin-right: .5rem; flex: none; }
+.avatar.big { width: 64px; height: 64px; border-width: 3px; margin-right: .8rem; }
+.avatar.ph { display: inline-flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 700; color: var(--muted); }
+.avatar.big.ph { font-size: .9rem; }
+.notice { background: var(--panel); border: 1px solid var(--rep); border-left-width: 4px; padding: .6rem .9rem; border-radius: 6px; margin-bottom: 1rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .8rem 1rem; }
+.card .n { font-size: 1.9rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.card .l { color: var(--muted); font-size: .85rem; }
+.filters { display: flex; flex-wrap: wrap; gap: .6rem; margin: .5rem 0 1rem; align-items: end; }
+.filters label { display: flex; flex-direction: column; font-size: .78rem; color: var(--muted); gap: .15rem; }
+select, input[type=search] { font: inherit; padding: .3rem .4rem; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 5px; min-width: 150px; }
+.tablewrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: .45rem .7rem; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); white-space: nowrap; }
+th[data-sort] { cursor: pointer; user-select: none; }
+th[data-sort]:hover { color: var(--text); }
+th .arrow { font-size: .7rem; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tfoot td { font-weight: 650; background: color-mix(in srgb, var(--line) 35%, transparent); }
+.badge { display: inline-block; padding: .05rem .5rem; border-radius: 99px; font-size: .78rem; font-weight: 600; border: 1px solid currentColor; white-space: nowrap; }
+.badge.pen { color: var(--pen); } .badge.rep { color: var(--rep); } .badge.none { color: var(--none); }
+.empty { padding: 1rem; color: var(--muted); }
+.legend { display: flex; gap: 1rem; font-size: .85rem; margin: .3rem 0; flex-wrap: wrap; }
+.legend i { display: inline-block; width: .8rem; height: .8rem; border-radius: 2px; margin-right: .3rem; vertical-align: -1px; }
+svg.chart { width: 100%; height: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+svg.chart text { fill: var(--muted); font-size: 11px; }
+.decision { max-width: 38ch; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+header.top .lang { margin-left: auto; }
+header.top select { -webkit-appearance: none; appearance: none; min-width: 0; font: 500 .9rem / 1 "Oswald", system-ui, sans-serif; letter-spacing: .03em; text-transform: uppercase; color: #fff; cursor: pointer;
+  padding: .4rem 1.8rem .4rem .9rem; border: 1px solid rgba(255, 255, 255, .28); border-radius: 99px; color-scheme: dark;
+  background-color: rgba(255, 255, 255, .08); background-repeat: no-repeat; background-size: 5px 5px, 5px 5px; background-position: calc(100% - 15px) 52%, calc(100% - 10px) 52%;
+  background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%); }
+header.top select:hover { background-color: rgba(255, 255, 255, .16); }
+header.top select:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+header.top select option { background: #1c1c21; color: #fff; text-transform: none; }
+
+
+.badge.syn { color: #fff; background: #c0262d; border-color: #c0262d; margin-left: .4rem; font-size: .68rem; }
+.synthetic-banner { background: #c0262d; color: #fff; padding: .5rem 1.2rem; font-weight: 600; font-size: .9rem; }
+.bar { display: inline-block; height: .55rem; background: var(--accent); border-radius: 2px; vertical-align: middle; }
+.decision { min-width: 24ch; }
+.badge.syn.mixed { background: transparent; color: #ff8a8f; }
+.synthetic-banner .realonly { margin-left: 1rem; font-weight: 500; white-space: nowrap; }
+
+:root { --on-accent: #fff; }
+@media (prefers-color-scheme: dark) { :root { --on-accent: #101018; } }
+.typebox { margin: 1rem 0 1.2rem; }
+
+/* Disclaimers (DESIGN.md §9) */
+body { min-height: 100vh; display: flex; flex-direction: column; } /* the footer sits at the end of the page, never over the content */
+footer.foot { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.2rem; margin: auto 0 0; max-width: none; padding: .8rem 1.2rem; font: 300 .85rem / 1.4 "Inter", system-ui, sans-serif; letter-spacing: .01em; color: rgba(255, 255, 255, .72); background: rgba(14, 14, 18, .78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, .12); }
+.foot .linklike { color: rgba(255, 255, 255, .9); }
+.foot .linklike:hover { color: #fff; }
+.foot .foot-meta { margin-left: auto; }
+.linklike { font: inherit; background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; }
+dialog.disclaimer { max-width: min(38rem, calc(100vw - 2rem)); background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem 1.4rem; }
+dialog.disclaimer::backdrop { background: rgb(0 0 0 / .6); }
+dialog.disclaimer h2 { margin-top: 0; }
+dialog.disclaimer .strong { font-weight: 650; }
+dialog.disclaimer .accept { font: inherit; font-weight: 650; padding: .5rem 1.2rem; border-radius: 99px; border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); cursor: pointer; }
+dialog.disclaimer .accept:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.stewards-banner { background: var(--panel); border: 1px solid var(--pen); border-left-width: 6px; padding: .7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-weight: 600; }
+
+/* Cells of the overview driver list (team logo, photo, name, number); the table itself uses the list style below. */
+.drv-cell { display: flex; align-items: center; gap: .5rem; }
+.drv-logo { width: 36px; height: 36px; flex: none; object-fit: contain; }
+.drv-photo { width: 44px; height: 44px; flex: none; object-fit: cover; object-position: top; align-self: flex-end; }
+.drv-name { flex: 1; min-width: 0; }
+.drv-name a { color: inherit; text-decoration: none; }
+.drv-name a:hover, .drv-name a:focus-visible { text-decoration: underline; }
+.drv-num { font-style: italic; font-weight: 500; padding-left: .5rem; opacity: .6; }
+
+/* Fonts for the driver header. DaggerSquare: 1001Fonts "Free For Commercial Use" licence, file used unmodified
+   (public/fonts/LICENSE-DaggerSquare.txt). Oswald: SIL Open Font License (public/fonts/LICENSE-Oswald-OFL.txt). */
+@font-face { font-family: "DaggerSquare"; src: url("fonts/DaggerSquare-Oblique.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Oswald"; src: url("fonts/Oswald-Variable.ttf") format("truetype"); font-weight: 200 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Variable-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; } /* Inter: SIL OFL (public/fonts/LICENSE-Inter-OFL.txt) */
+
+/* Driver header (Figma node 15:555): team-colour background with two soft white glows, big photo cut at the waist,
+   name + number in DaggerSquare, everything else in Oswald, always white text. */
+.hero { display: grid; grid-template-columns: minmax(9rem, 24%) 1fr; align-items: end; gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(.6rem, 2vw, 1.2rem) 0 0; margin: .4rem 0 1.4rem; color: #fff;
+  font-family: "Oswald", system-ui, sans-serif; text-transform: uppercase; letter-spacing: -.02em; text-shadow: 0 2px 14px rgba(0, 0, 0, .22); }
+
+.hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 1336 / 2100; object-fit: cover; object-position: top; align-self: end; }
+.hero-info { align-self: center; padding-bottom: clamp(1rem, 3vw, 2rem); min-width: 0; }
+.hero-head { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem clamp(1rem, 3vw, 2.2rem); }
+.hero-name { margin: 0; font: 400 clamp(2.1rem, 5.4vw, 4.9rem) / .84 "DaggerSquare", "Oswald", sans-serif; letter-spacing: 0; width: min-content; overflow-wrap: normal; }
+.hero-name .badge { font-family: system-ui, sans-serif; font-size: .7rem; vertical-align: middle; letter-spacing: 0; }
+.hero-num { font: 400 clamp(3.6rem, 10.5vw, 9.4rem) / .8 "DaggerSquare", "Oswald", sans-serif; letter-spacing: 0; }
+.hero-team { display: flex; align-items: center; gap: .6rem; margin-top: .5rem; font-weight: 300; font-size: clamp(1.3rem, 2.6vw, 2.4rem); line-height: 1.1; }
+.hero-licence { display: flex; align-items: baseline; flex-wrap: wrap; gap: .2rem .9rem; margin-top: clamp(.8rem, 2.4vw, 1.8rem); font-weight: 300; font-size: clamp(1.1rem, 2.2vw, 2rem); }
+.hero-licence b { font-weight: 400; font-size: 1.5em; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: .3rem clamp(1.2rem, 3vw, 2.6rem); margin: clamp(.9rem, 2.4vw, 1.8rem) 0 0; }
+.hero-stats > div { display: flex; align-items: baseline; gap: .45rem; }
+.hero-stats dt { font-weight: 400; font-size: clamp(.75rem, 1.15vw, 1.05rem); }
+.hero-stats dd { margin: 0; font-weight: 400; font-size: clamp(2rem, 4.2vw, 3.8rem); line-height: 1; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .hero { grid-template-columns: 1fr; } .hero-photo { width: 62%; margin: 0 auto; } }
+
+/* Driver page: the team colour and the two soft glows of the header cover the whole page (no dark side bars). The glows
+   are fixed to the window so they stay put while scrolling. Text that sits directly on the colour is white; panels
+   (cards, tables, charts) keep their own background. --team is set on <body> by driver.js. */
+body.team-page { --team: #00a1e8; min-height: 100vh; background-color: var(--team); background-attachment: fixed;
+  background-image: radial-gradient(ellipse 34% 46% at 3% 92%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0)),
+                    radial-gradient(ellipse 34% 46% at 90% 8%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0)); }
+body.team-page main { color: #fff; }
+body.team-page .card, body.team-page .tablewrap, body.team-page .notice, body.team-page svg.chart { color: var(--text); } /* panels keep their own text colour */
+body.team-page main > p a, body.team-page main > p a:visited { color: #fff; }
+body.team-page .legend { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); }
+@media (max-width: 640px) { body.team-page { background-attachment: scroll; } }
+
+/* Flag next to the team name in the driver header (Figma node 31:22): about as tall as the capital letters. */
+.hero-flag { height: .78em; width: auto; aspect-ratio: 4 / 3; flex: none; }
+
+/* Slanted buttons (Figma nodes 31:1457 and 31:1456): a parallelogram, top edge shifted left, bottom edge shifted right.
+   It is a skewed rectangle behind the text, so it grows with the label and the slant angle stays the same (the design's
+   124.7 / 183.75 = 0.68 -> 34deg). Idle = white outline, pressed = white fill and black text, "mixed" = some of the
+   group's types are selected (only possible from an address typed by hand). Used by the group filter on the driver page. */
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem .5rem; padding: 0 .75rem; } /* centred; the padding is room for the overhang of the slanted ends */
+.tab { position: relative; z-index: 0; display: inline-flex; align-items: center; justify-content: center; height: 2.1rem; padding: 0 1.5rem;
+  font: 500 1.05rem / 1 "Oswald", sans-serif; letter-spacing: -.02em; text-decoration: none; color: inherit; background: none; border: 0; cursor: pointer; }
+.tab::before { content: ""; position: absolute; inset: 0; z-index: -1; border: 2px solid currentColor; transform: skewX(34deg); transition: background-color .12s; }
+.tab:hover::before { background: color-mix(in srgb, currentColor 18%, transparent); }
+/* Pressed = filled with the text colour, label in the page background colour (--tab-on). Works on light, dark and team-colour pages. */
+.tab[aria-pressed="true"]::before, .tab[aria-pressed="true"]:hover::before { background: currentColor; }
+.tab[aria-pressed="true"] > span { color: var(--tab-on, var(--bg)); }
+.tab[aria-pressed="mixed"]::before { background: color-mix(in srgb, currentColor 28%, transparent); }
+.tab:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+body.team-page { --tab-on: #111; }
+/* Driver page, below the header (Figma: the lower part is the team colour darkened 35%, full width). .lower paints
+   its dark layer as a huge box-shadow clipped to the sides, so it bleeds to both edges of the window. */
+/* The page is a column so the dark band (.lower) can grow to the bottom of the window when the content is short. */
+body.team-page { padding-bottom: 0; }
+body.team-page main { padding-bottom: 0; flex: 1; display: flex; flex-direction: column; width: 100%; }
+body.team-page .lower { flex: 1; }
+body.team-page .hero { margin-bottom: 0; }
+body.team-page .lower { padding: 1rem 0 2rem; background: rgba(0, 0, 0, .35); box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .35); clip-path: inset(0 -100vmax); }
+body.team-page .lower .typebox { margin-top: 0; }
+body.team-page .lower .typebox .muted { margin: .6rem 0 0; text-align: center; }
+
+/* Cases per Grand Prix (Figma node 31:1455). Outcome colours are the site's own (--pen / --rep / --none), not the mock-up's.
+   Bar width and the slope of its top edge (1.315 x the width) are one variable. */
+.gpchart { --bw: 1.6rem; --bh: 11rem; --rise: calc(var(--bw) * 1.315); overflow-x: auto; }
+.gpplot { position: relative; display: flex; align-items: flex-end; gap: .15rem; padding: .7rem 0 .6rem 1.9rem; min-width: min-content; }
+/* Reference lines: the grid box has the same height as the bars and lines up with them, behind (the tallest bar reaches the top line). */
+.gpgrid { position: absolute; left: 0; right: 0; top: .7rem; height: var(--bh); pointer-events: none; }
+.gpline { position: absolute; left: 1.9rem; right: 0; border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent); }
+.gpline b { position: absolute; right: calc(100% + .35rem); top: -.62em; font: 400 .85rem / 1 "Oswald", sans-serif; color: inherit; opacity: .85; font-variant-numeric: tabular-nums; }
+.gpcol { position: relative; flex: 1 0 2.9rem; font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: .35rem; min-width: 0; }
+.gpcol.off .gpflag, .gpcol.off .gpcode { opacity: .4; }
+.gpcol:disabled { cursor: default; }
+/* One Grand Prix picked: everything else (bars, flags, labels) goes dark, the picked one stays as it is. */
+.gpcol { transition: opacity .15s; }
+.gpplot.sel .gpcol:not([aria-pressed="true"]) { opacity: .25; }
+.gpplot.sel .gpcol:not([aria-pressed="true"]):not(:disabled):hover { opacity: .6; }
+.gpcol:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.gpbar { position: relative; width: var(--bw); height: var(--bh); }
+.seg { position: absolute; left: 0; right: 0; bottom: 0; height: var(--h); background: var(--c);
+  clip-path: polygon(0 min(var(--rise), 100%), 100% 0, 100% 100%, 0 100%); }
+.seg.pen { --c: var(--pen); } .seg.rep { --c: var(--rep); } .seg.none { --c: var(--none); }
+.gpflag { width: 2.3rem; height: auto; aspect-ratio: 4 / 3; display: block; }
+.gpcode { font: 400 1.35rem / 1 "Oswald", sans-serif; letter-spacing: -.02em; color: inherit; }
+
+/* List style of the driver page (Figma node 31:1472): a dark translucent panel on the team colour, Oswald Light, every
+   second row a little darker, the header on a lighter band. Applied to the three tables of the page (className 'list').
+   The mock-up's text is huge (96px on a 4378px page); this is the same look at reading size. Numbers stay left-aligned,
+   as in the design. */
+.tablewrap.list { background: #171717; border: 0; border-radius: 0; color: #fff; --pen: #ff6b60; --rep: #f0b429; --none: #62c796; }
+.tablewrap.list tfoot td { font-weight: 500; border-top: 1px solid rgba(255, 255, 255, .2); }
+body.team-page .tablewrap.list { background: rgba(0, 0, 0, .61); border: 0; border-radius: 0; color: #fff;
+  --pen: #ff6b60; --rep: #f0b429; --none: #62c796; }
+.tablewrap.list table { font: 300 1.4rem / 1.2 "Oswald", sans-serif; letter-spacing: -.02em; }
+.tablewrap.list th, .tablewrap.list td { padding: .8rem 1.1rem; border-bottom: 0; vertical-align: middle; }
+.tablewrap.list th { background: rgba(255, 255, 255, .1); font: 400 1rem / 1.2 "Oswald", sans-serif; letter-spacing: .06em; color: rgba(255, 255, 255, .75); }
+.tablewrap.list th[data-sort]:hover { color: #fff; }
+/* Tables with many columns and long text (cases, deleted laps): same look, reading-size type. */
+.tablewrap.list.compact table { font-size: 1.25rem; }
+.tablewrap.list.compact th, .tablewrap.list.compact td { padding: .7rem .8rem; }
+.tablewrap.list.compact td.num { font-weight: 600; } /* the figures stand out from the names */
+/* Team column: a wider cell with the logo (and its header) centred, so it has room between the left edge and the driver's face. */
+.tablewrap.list.compact th:first-child, .tablewrap.list.compact td:first-child { width: 7.5rem; padding-left: 1.2rem; padding-right: 1.2rem; text-align: center; }
+.tablewrap.list.compact td:first-child .drv-logo { display: block; margin: 0 auto; }
+.tablewrap.list.compact th:nth-child(2), .tablewrap.list.compact td:nth-child(2) { padding-left: .4rem; }
+.tablewrap.list.dense table { font-size: 1.05rem; line-height: 1.25; }
+.tablewrap.list.dense .decision { min-width: 14ch; }
+.tablewrap.list.dense th, .tablewrap.list.dense td { padding: .6rem .5rem; vertical-align: top; }
+.tablewrap.list.dense th { font-size: .9rem; letter-spacing: .03em; }
+.tablewrap.list tbody tr:nth-child(even) { background: rgba(0, 0, 0, .16); }
+.tablewrap.list td.num, .tablewrap.list th.num { text-align: left; }
+.tablewrap.list a, .tablewrap.list a:visited { color: #fff; text-decoration-color: rgba(255, 255, 255, .6); }
+
+/* Typography of the whole site: two faces only. Oswald for everything; DaggerSquare only for a driver's name and number
+   (.hero-name / .hero-num, .dcard-num). Titles are big. */
+body { font-family: "Oswald", system-ui, "Segoe UI", sans-serif; font-size: 16px; }
+
+.muted { font-size: 1rem; }
+main h1 { margin: .2rem 0 1rem; font: 500 clamp(2.1rem, 4vw, 3rem) / 1.05 "Oswald", sans-serif; letter-spacing: -.01em; }
+main h2 { margin: 2.2rem 0 .8rem; font: 500 clamp(1.8rem, 3.2vw, 2.5rem) / 1.1 "Oswald", sans-serif; letter-spacing: -.01em; }
+body.team-page .lower h2 { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); }
+body.team-page .lower .muted { color: rgba(255, 255, 255, .8); }
+/* The colour key sits under the chart. */
+body.team-page .legend { margin: .6rem 0 0; font-size: 1.05rem; gap: .6rem 1.4rem; }
+body.team-page .legend i { width: .95rem; height: .95rem; }
+/* Outcome words in the tables (Penalizado, Reprimenda, Sin sanción): no circle, just coloured letters, a notch heavier than the rest. */
+.tablewrap.list .badge:not(.syn) { padding: 0; border: 0; border-radius: 0; background: none; font-size: inherit; font-weight: 600; letter-spacing: 0; }
+
+/* Arrows (Figma node 33:2037, the double chevron; one chevron of it is used, mirrored for "previous"). The SVG is a mask,
+   so the colour is just a background and can change per use. Left and right arrows on the driver page: pager. */
+.chev { display: block; width: 2.1rem; height: 2.7rem; background: currentColor; -webkit-mask: url("img/icons/chevron.svg") center / contain no-repeat; mask: url("img/icons/chevron.svg") center / contain no-repeat; }
+.pg-prev .chev { transform: scaleX(-1); }
+/* The arrows sit at the two sides of the driver header, centred on it vertically (next to the photo and the name). The header
+   gets side room for them. */
+.herobox { position: relative; padding: 0 clamp(2.2rem, 4.2vw, 3.6rem); }
+.pager { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+.pager .pg { pointer-events: auto; }
+.pg { display: inline-flex; color: #fff; padding: .1rem .3rem; opacity: .95; transition: transform .12s, opacity .12s; }
+.pg:hover { opacity: 1; }
+.pg-prev:hover { transform: translateX(-.2rem); } .pg-next:hover { transform: translateX(.2rem); }
+.pg:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Drivers page: one small card per driver (team-colour background with the two soft glows, photo cut at the waist,
+   number in DaggerSquare, name in Oswald). */
+.dcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .9rem; margin: 1rem 0 2rem; }
+.dcard { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; border-radius: .3rem; color: #fff; text-decoration: none; font-family: "Oswald", system-ui, sans-serif;
+  background: radial-gradient(ellipse 85% 45% at 8% 100%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0)), radial-gradient(ellipse 85% 45% at 95% 0%, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0)), var(--team); }
+.dcard-photo { position: absolute; left: 50%; bottom: 0; height: 88%; width: auto; transform: translateX(-50%); transition: transform .2s; }
+.dcard:hover .dcard-photo { transform: translateX(-50%) scale(1.04); }
+/* Headshots served by the F1 CDN are square (the tall cut-outs are local-only): full card width, sitting on the bottom edge. */
+.dcard-photo.remote { height: auto; width: 100%; }
+.hero-photo.remote { aspect-ratio: 1; object-fit: contain; }
+.dcard-num { position: absolute; top: .3rem; right: .55rem; font: 400 1.9rem / 1 "DaggerSquare", "Oswald", sans-serif; text-shadow: 0 2px 10px rgba(0, 0, 0, .3); }
+.dcard-name { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; padding: 1.6rem .6rem .45rem; line-height: 1.05; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .65)); }
+.dcard-first { font-weight: 300; font-size: .85rem; opacity: .9; }
+.dcard-last { display: flex; align-items: center; gap: .35rem; font-weight: 500; font-size: 1.2rem; text-transform: uppercase; letter-spacing: -.01em; }
+.dcard-flag { width: 1.1rem; height: auto; aspect-ratio: 4 / 3; flex: none; }
+.dcard:hover, .dcard:focus-visible { box-shadow: 0 0 0 2px var(--text); }
+.dcard:focus-visible { outline: none; }
+
+/* Overview driver list: the shared list style plus a thin team-colour edge on every row (--team, from the validated OpenF1
+   colour, see teams.js). Sortable headers show a small arrow hint. */
+.tablewrap.list tr.drv td:first-child { box-shadow: inset 3px 0 0 var(--team); }
+.tablewrap.list .drv-name a:hover, .tablewrap.list .drv-name a:focus-visible { text-decoration: underline; }
+.tablewrap.list .drv-name { white-space: nowrap; }
+.tablewrap.list th[data-sort] { cursor: pointer; white-space: nowrap; }
+.tablewrap.list th[data-sort]:not(:has(.arrow))::after { content: " ↕"; opacity: .35; font-size: .8em; }
+
+/* Overview list: a row lights up in its team colour (--team) on every column, and a click opens the driver. */
+.tablewrap.list tr.drv { cursor: pointer; }
+.tablewrap.list tr.drv td { transition: background-color .12s; }
+.tablewrap.list tr.drv:hover td, .tablewrap.list tr.drv:focus-within td { background: var(--team); color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
+.tablewrap.list tr.drv:hover td:first-child, .tablewrap.list tr.drv:focus-within td:first-child { box-shadow: none; }
+
+/* Smoother move between pages (driver to driver with the arrows, etc.): the browser keeps the old page on screen and
+   crossfades to the new one instead of showing an empty dark page in between. Browsers without support just navigate. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+/* Driver page: the photo and the text fade in when the data arrives, instead of popping in. */
+.hero-photo { opacity: 0; transition: opacity .3s ease-out; }
+.hero-photo.loaded { opacity: 1; }
+.hero-info { animation: fade-in .3s ease-out both; }
+/* Reserve the header's space while the data loads (an empty #hero): a placeholder with the photo's proportions in the photo
+   column, so the dark band below does not jump when the header appears. */
+.hero:empty::before { content: ""; display: block; aspect-ratio: 1336 / 2100; }
+@media (max-width: 640px) { .hero:empty::before { width: 62%; margin: 0 auto; } }
+@keyframes fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  .hero-photo { transition: none; }
+  .hero-info { animation: none; }
+}
+
+/* Overview page (Figma node 36:2): the whole page is the same dark red (#690000) with the two soft white glows; title, season and totals on top, the driver list below. */
+body.overview-page { background-color: #690000; background-attachment: fixed; --tab-on: #111;
+  background-image: radial-gradient(ellipse 34% 46% at 3% 92%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0)),
+                    radial-gradient(ellipse 34% 46% at 90% 8%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0)); }
+body.overview-page main { color: #fff; padding-top: 0; }
+.ov-hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem 2rem; padding: clamp(1.2rem, 3vw, 2.4rem) 0 clamp(1.4rem, 3vw, 2.6rem); color: #fff; text-transform: uppercase; }
+main .ov-title { margin: 0; font: 400 1rem / 1 "Oswald", sans-serif; letter-spacing: 0; display: flex; flex-direction: column; }
+.ov-f1, .ov-sr { font-family: "DaggerSquare", "Oswald", sans-serif; line-height: .82; }
+.ov-f1 { display: flex; gap: .5em; font-size: clamp(3rem, 8.6vw, 7.5rem); }
+.ov-f1 i { font-style: normal; }
+.ov-sr { font-size: clamp(1.9rem, 5.7vw, 5rem); }
+.ov-season { margin-top: .5rem; font-weight: 300; font-size: clamp(1.1rem, 2.85vw, 2.5rem); line-height: .82; }
+.ov-stats { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; margin: 0 0 0 auto; max-width: 100%; font-family: "Oswald", sans-serif; letter-spacing: -.02em; }
+.ov-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .4rem clamp(1.2rem, 2.6vw, 2.4rem); }
+.ov-row > div { display: flex; align-items: baseline; gap: .5rem; }
+.ov-stats dt { font-weight: 400; font-size: clamp(.7rem, 1.2vw, 1.05rem); }
+.ov-stats dd { margin: 0; font-weight: 400; font-size: clamp(2.2rem, 5.4vw, 4.8rem); line-height: 1.05; font-variant-numeric: tabular-nums; }
+.ov-lower { padding-top: 1.2rem; }
+body.overview-page .ov-lower h2 { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); }
+body.overview-page .tablewrap.list { background: rgba(0, 0, 0, .61); }
+@media (max-width: 640px) { body.overview-page { background-attachment: scroll; } }

@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://media.formula1.com; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stewards' Room</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <h1 data-i18n="stewards.title"></h1>
+  <div class="typebox" id="typeBox"></div>
+  <p class="muted" id="missing"></p>
+  <div id="stewards"></div>
+  <div id="driverPart">
+    <h2 data-i18n="stewards.byDriver"></h2>
+    <div class="filters"><label><span data-i18n="stewards.pick"></span><select id="pick"></select></label></div>
+    <div id="byDriver"></div>
+  </div>
+</main>
+<script type="module" src="js/stewards.js"></script>
+</body>
+</html>

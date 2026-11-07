@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://media.formula1.com; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stewards' Room</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <h1 data-i18n="cases.title"></h1>
+  <div class="typebox" id="typeBox"></div>
+  <div class="filters" id="filters"></div>
+  <h2 data-i18n="chart.title"></h2>
+  <div id="gpChart"></div>
+  <div class="legend">
+    <span><i style="background:var(--pen)"></i><span data-i18n="outcome.penalized"></span></span>
+    <span><i style="background:var(--rep)"></i><span data-i18n="outcome.reprimand"></span></span>
+    <span><i style="background:var(--none)"></i><span data-i18n="outcome.none"></span></span>
+  </div>
+  <h2 data-i18n="types.title"></h2>
+  <p class="muted" data-i18n="types.note"></p>
+  <div id="types"></div>
+  <p class="muted" id="count"></p>
+  <div id="cases"></div>
+</main>
+<script type="module" src="js/cases.js"></script>
+</body>
+</html>
