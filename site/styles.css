@@ -251,6 +251,8 @@ body.team-page .legend i { width: .95rem; height: .95rem; }
   background: radial-gradient(ellipse 85% 45% at 8% 100%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0)), radial-gradient(ellipse 85% 45% at 95% 0%, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0)), var(--team); }
 .dcard-photo { position: absolute; left: 50%; bottom: 0; height: 88%; width: auto; transform: translateX(-50%); transition: transform .2s; }
 .dcard:hover .dcard-photo { transform: translateX(-50%) scale(1.04); }
+/* The portraits are full body (about 1336x3840): crop them to the top part, waist up, like the driver header does. */
+.dcard-photo:not(.remote) { aspect-ratio: 1336 / 2100; object-fit: cover; object-position: top; }
 /* Headshots served by the F1 CDN are square (the tall cut-outs are local-only): full card width, sitting on the bottom edge. */
 .dcard-photo.remote { height: auto; width: 100%; }
 .hero-photo.remote { aspect-ratio: 1; object-fit: contain; }

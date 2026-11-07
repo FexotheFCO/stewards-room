@@ -1,7 +1,7 @@
 import { api, layout, table, caseColumns, showError, esc, t, tData, synBadge, groupButtons, typesFromUrl, typesQuery, syncTypesUrl } from '../app.js';
 import { gpChart } from '../charts.js';
-import { num, stripAccents, bigPhoto, photoSrc } from '../safe.js';
-import { teamColour, byCarNumber, neighbours, rememberTeams } from '../teams.js';
+import { num, stripAccents, photoSrc } from '../safe.js';
+import { teamColour, byCarNumber, neighbours, rememberTeams, bigPhoto } from '../teams.js';
 import { flagHtml, driverCountry } from '../flags.js';
 layout('drivers.html');
 

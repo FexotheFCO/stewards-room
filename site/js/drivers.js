@@ -1,6 +1,6 @@
 import { api, layout, showError, esc, t, synBadge } from '../app.js';
-import { num, bigPhoto, photoSrc } from '../safe.js';
-import { teamColour, surname, byCarNumber, rememberTeams } from '../teams.js';
+import { num, photoSrc } from '../safe.js';
+import { teamColour, surname, byCarNumber, rememberTeams, bigPhoto } from '../teams.js';
 import { flagHtml, driverCountry } from '../flags.js';
 layout('drivers.html');
 document.title = `Stewards' Room · ${t('nav.drivers')}`;
@@ -9,7 +9,7 @@ document.title = `Stewards' Room · ${t('nav.drivers')}`;
  *  The photo is the large local one (git-ignored), falling back to the small headshot, or none (see the error handler). */
 const card = (d) => {
   const p = d.profile;
-  const photo = bigPhoto(p, d.slug, 4); // cards are small: the 432px CDN image is plenty (the header uses the 884px one)
+  const photo = bigPhoto(p, d.slug, { width: 320, cols: 4 }); // cards are small: 320px wide is plenty (the header asks for 640)
   const sur = surname(d.driver), first = d.driver.slice(0, d.driver.length - sur.length).trim();
   const number = p?.number != null && Number.isFinite(Number(p.number)) ? `<span class="dcard-num">${num(p.number)}</span>` : '';
   return `<a class="dcard" href="driver.html?d=${encodeURIComponent(d.slug)}" style="--team:#${teamColour(p)}" aria-label="${esc(d.driver)}">

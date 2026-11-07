@@ -48,18 +48,6 @@ export const photoHtml = (profile) => {
   return src ? `<img class="drv-photo" src="${src}" alt="" loading="lazy" width="44" height="44">` : '<span class="drv-photo"></span>';
 };
 
-/**
- * Large photo for the driver header and the Drivers cards. With the local large file (img/drivers-large/<slug>.webp, a
- * tall 1336x2100 cut-out that only exists on the developer's machine, signalled by profile.photo) we use that; otherwise
- * the CDN headshot at `cols` columns (square; 8 = 884px ~200KB for the header, 4 = 432px ~60KB for the small cards),
- * flagged `remote` so the CSS lays it out for a square picture. Returns { src, remote } or null.
- */
-export const bigPhoto = (profile, slug, cols = 8) => {
-  if (localPhoto(profile) && /^[a-z0-9-]+$/.test(slug ?? '')) return { src: `img/drivers-large/${slug}.webp`, remote: false };
-  const src = remotePhoto(profile, cols);
-  return src ? { src, remote: true } : null;
-};
-
 /** Text without accents ("Sergio Pérez" -> "Sergio Perez", "Hülkenberg" -> "Hulkenberg"). For the display font of the
  *  driver header, where an accent over a capital collides with the line above. */
 export const stripAccents = (s) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '');
