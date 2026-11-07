@@ -309,7 +309,9 @@ main .ov-title { margin: 0; font: 400 1rem / 1 "Oswald", sans-serif; letter-spac
 .ov-f1 i { font-style: normal; }
 .ov-sr { font-size: clamp(1.9rem, 5.7vw, 5rem); }
 .ov-season { margin-top: .5rem; font-weight: 300; font-size: clamp(1.1rem, 2.85vw, 2.5rem); line-height: .82; }
-.ov-stats { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; margin: 0 0 0 auto; max-width: 100%; font-family: "Oswald", sans-serif; letter-spacing: -.02em; }
+/* flex: 1 1 100% = always on its own line, below the title. Without it the block sat beside the title or wrapped below it
+   depending on how wide the NUMBERS were (3 digits wrap, 1-2 digits fit), so it jumped up for the types with few cases. */
+.ov-stats { flex: 1 1 100%; display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; margin: 0 0 0 auto; max-width: 100%; font-family: "Oswald", sans-serif; letter-spacing: -.02em; }
 .ov-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .4rem clamp(1.2rem, 2.6vw, 2.4rem); }
 .ov-row > div { display: flex; align-items: baseline; gap: .5rem; }
 .ov-stats dt { font-weight: 400; font-size: clamp(.7rem, 1.2vw, 1.05rem); }
