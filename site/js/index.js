@@ -1,4 +1,4 @@
-import { api, layout, table, showError, t, synBadge, groupButtons, typesFromUrl, typesQuery, syncTypesUrl } from '../app.js';
+import { api, layout, table, countTo, showError, t, synBadge, groupButtons, typesFromUrl, typesQuery, syncTypesUrl } from '../app.js';
 import { esc, num, photoHtml } from '../safe.js';
 import { teamRowAttr, teamLogoHtml } from '../teams.js';
 layout('index.html');
@@ -32,6 +32,7 @@ try {
   const selected = typesFromUrl(meta);
   let summary = null;
   let seq = 0;
+  let prevCards = []; // last totals, so a filter click counts from the old number to the new one
 
   function drawDrivers() {
     const rows = summary.drivers;
@@ -57,6 +58,13 @@ try {
     document.getElementById('cards').innerHTML =
       row([[tot.cases, t('overview.cardCases')], [tot.pointsAwarded, t('overview.cardPoints')]])
       + row([[tot.penalized, t('overview.cardPenalized')], [tot.notPenalized, t('overview.cardNotPenalized')], [tot.reprimands, t('overview.cardReprimands')]]);
+    // Numbers count up on the first draw and between old and new values after a filter click.
+    const vals = [tot.cases, tot.pointsAwarded, tot.penalized, tot.notPenalized, tot.reprimands].map(num);
+    document.querySelectorAll('#cards dd').forEach((dd, k) => countTo(dd, vals[k], prevCards[k] ?? 0));
+    prevCards = vals;
+    // The rows rise in once, on the first draw only (sorting redraws the table and must not replay it).
+    const list = document.getElementById('drivers');
+    if (!list.dataset.entered) { list.dataset.entered = '1'; list.classList.add('is-entering'); setTimeout(() => list.classList.remove('is-entering'), 1800); }
     drawDrivers();
   }
 

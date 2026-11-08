@@ -34,17 +34,31 @@ export async function api(path) {
   return structuredClone(body); // pages sort and tweak what they get: never hand out objects shared with the loaded dataset
 }
 
+/** Count a number between two values instead of swapping it: 0 -> n on the first draw, old -> new after a filter click.
+ *  With "reduce motion" it just shows the final number. */
+export function countTo(el, to, from = 0, ms = 700) {
+  if (!el) return;
+  if (from === to || matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = to; return; }
+  el.textContent = from;
+  const t0 = performance.now();
+  const step = (now) => {
+    const k = Math.min(1, (now - t0) / ms), eased = 1 - (1 - k) ** 3;
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 const NAV = [['index.html', 'nav.overview'], ['drivers.html', 'nav.drivers'], ['cases.html', 'nav.cases'], ['stewards.html', 'nav.stewards']];
 
 export function layout(active) {
-  document.body.insertAdjacentHTML(
-    'afterbegin',
-    `<header class="top"><strong>Stewards' Room</strong><nav>${NAV.map(
+  // The banner is already in the HTML (empty, with its final height), so it does not push the page down when the dictionaries arrive.
+  const top = document.getElementById('top') ?? document.body.insertAdjacentElement('afterbegin', document.createElement('header'));
+  top.className = 'top';
+  top.innerHTML = `<strong>Stewards' Room</strong><nav>${NAV.map(
       ([href, key]) => `<a href="${href}"${href === active ? ' aria-current="page"' : ''}>${esc(t(key))}</a>`,
     ).join('')}</nav>
     <label class="lang"><span class="sr">${esc(t('lang.label'))}</span>
-      <select id="lang" aria-label="${esc(t('lang.label'))}"><option value="es">Español</option><option value="en">English</option></select></label></header>`,
-  );
+      <select id="lang" aria-label="${esc(t('lang.label'))}"><option value="es">Español</option><option value="en">English</option></select></label>`;
   document.body.insertAdjacentHTML('beforeend', `<footer class="foot muted"><span>${esc(t('footer.text'))}</span> <button type="button" class="linklike" id="disclaimerLink">${esc(t('footer.notice'))}</button><span class="foot-meta" id="meta"></span></footer>`);
   const sel = document.getElementById('lang');
   sel.value = lang;

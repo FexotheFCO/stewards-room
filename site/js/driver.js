@@ -1,4 +1,4 @@
-import { api, layout, table, caseColumns, showError, esc, t, tData, synBadge, groupButtons, typesFromUrl, typesQuery, syncTypesUrl } from '../app.js';
+import { api, layout, table, countTo, caseColumns, showError, esc, t, tData, synBadge, groupButtons, typesFromUrl, typesQuery, syncTypesUrl } from '../app.js';
 import { gpChart } from '../charts.js';
 import { num, stripAccents, photoSrc } from '../safe.js';
 import { teamColour, byCarNumber, neighbours, rememberTeams, bigPhoto } from '../teams.js';
@@ -71,6 +71,7 @@ try {
   const pseudoMeta = { facets: { types: first.types } }; // same shape groupButtons expects, limited to this driver's types
   const selected = typesFromUrl(pseudoMeta);
   let seq = 0;
+  let prevStats = []; // last header numbers, to count from them after a filter click
   let last = null; // the profile being shown (follows the type filter)
   let gpSel = null; // Grand Prix picked in the chart: one (FIA event name) or null = all, never a combination
 
@@ -81,6 +82,9 @@ try {
     document.getElementById('heroStats').innerHTML = [
       [s.cases, t('col.cases')], [s.penalized, t('col.penalized')], [s.reprimands, t('col.reprimand')], [s.noSanction, t('col.none')],
     ].map(([n, l]) => `<div><dt>${esc(l)}</dt><dd>${num(n)}</dd></div>`).join('');
+    const nums = [s.cases, s.penalized, s.reprimands, s.noSanction].map(num);
+    document.querySelectorAll('#heroStats dd').forEach((dd, k) => countTo(dd, nums[k], prevStats[k] ?? 0));
+    prevStats = nums;
     drawGp();
   }
 

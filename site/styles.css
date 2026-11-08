@@ -104,7 +104,7 @@ dialog.disclaimer .accept:focus-visible { outline: 2px solid var(--text); outlin
 
 /* Driver header (Figma node 15:555): team-colour background with two soft white glows, big photo cut at the waist,
    name + number in DaggerSquare, everything else in Oswald, always white text. */
-.hero { display: grid; grid-template-columns: minmax(9rem, 24%) 1fr; align-items: end; gap: clamp(1rem, 3vw, 2.5rem);
+.hero { display: grid; grid-template-columns: minmax(9rem, 30%) 1fr; align-items: end; gap: clamp(1rem, 3vw, 2.5rem);
   padding: clamp(.6rem, 2vw, 1.2rem) 0 0; margin: .4rem 0 1.4rem; color: #fff;
   font-family: "Oswald", system-ui, sans-serif; text-transform: uppercase; letter-spacing: -.02em; text-shadow: 0 2px 14px rgba(0, 0, 0, .22); }
 
@@ -285,7 +285,7 @@ body.team-page .legend i { width: .95rem; height: .95rem; }
 /* Driver page: the photo and the text fade in when the data arrives, instead of popping in. */
 .hero-photo { opacity: 0; transition: opacity .3s ease-out; }
 .hero-photo.loaded { opacity: 1; }
-.hero-info { animation: fade-in .3s ease-out both; }
+.hero-info { animation: fade-in .3s ease-out backwards; } /* backwards, not both: a finished animation must not leave a stacking context that would isolate the speed lines blend */
 /* Reserve the header's space while the data loads (an empty #hero): a placeholder with the photo's proportions in the photo
    column, so the dark band below does not jump when the header appears. */
 .hero:empty::before { content: ""; display: block; aspect-ratio: 1336 / 2100; }
@@ -317,6 +317,126 @@ main .ov-title { margin: 0; font: 400 1rem / 1 "Oswald", sans-serif; letter-spac
 .ov-stats dt { font-weight: 400; font-size: clamp(.7rem, 1.2vw, 1.05rem); }
 .ov-stats dd { margin: 0; font-weight: 400; font-size: clamp(2.2rem, 5.4vw, 4.8rem); line-height: 1.05; font-variant-numeric: tabular-nums; }
 .ov-lower { padding-top: 1.2rem; }
-body.overview-page .ov-lower h2 { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); }
 body.overview-page .tablewrap.list { background: rgba(0, 0, 0, .61); }
 @media (max-width: 640px) { body.overview-page { background-attachment: scroll; } }
+
+/* Overview redesign (Figma 39:4): dark concrete background, speed lines beside the title, season chevron, slanted nav banner. Background texture and nav banner are shared by every page (team-coloured driver pages keep their team colour under the texture); speed lines are overview only. */
+body:not(.team-page) { background-color: #171717; background-image: none; background-attachment: scroll; position: relative; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url("img/overview/concrete.jpg") center / cover no-repeat; mix-blend-mode: hard-light; opacity: .1; }
+header.top { box-sizing: border-box; background: rgba(0, 0, 0, .34); border-bottom: 0; padding: 0 max(1.2rem, calc((100% - 1200px) / 2 + 1.2rem)); gap: 0; flex-wrap: nowrap; min-height: 60px; }
+header.top strong { display: none; }
+header.top nav { flex: 1; gap: 0; }
+header.top nav a { display: flex; align-items: center; justify-content: center; flex: 1; height: 60px; padding: 0 .5rem; border: 0; color: #fff; font-size: 1.5rem; text-transform: uppercase; line-height: .82; }
+header.top nav a[aria-current="page"] { background: url("img/overview/tab-active.svg") center / 100% 100% no-repeat; }
+.ov-hero { padding-top: clamp(1.45rem, 3.6vw, 2.9rem); } /* ~20% more room between the banner and the title */
+.ov-stats { position: relative; z-index: 1; margin-top: clamp(.8rem, 2vw, 1.6rem); } /* clears the bottom of the speed lines */
+.ov-title { position: relative; } /* no z-index here: a stacking context would isolate the speed lines and the blend would have nothing to blend with */
+.ov-title > * { position: relative; z-index: 1; }
+.ov-title { flex: 1 1 100%; } /* the title row spans the content width so the speed lines can sit on its right edge */
+.ov-title::before { content: ""; position: absolute; z-index: 0; top: -.5rem; bottom: -.25rem; right: 0; aspect-ratio: 2204 / 568; background: url("img/overview/speedlines.png") center / 100% 100% no-repeat; pointer-events: none; } /* top: just above FORMULA 1; bottom: just under SEASON 2026; scaleX(-1) is the Figma orientation */.ov-season::after { content: ""; display: inline-block; width: .8em; height: .37em; margin-left: .45em; vertical-align: middle; background: url("img/overview/chevron-season.svg") center / contain no-repeat; }
+@media (max-width: 640px) { .ov-title::before { display: none; } header.top nav a { font-size: 1rem; } header.top { min-height: 48px; } header.top nav a { height: 48px; } }
+
+header.top .lang { position: absolute; top: 50%; right: 1rem; margin: 0; transform: translateY(-50%); }
+
+
+/* Driver page (Figma 38:68), positions measured from the node coordinates:
+   - all bands use the exported speedlines.png (2204x568, converted to solid white lines on a transparent background, dense on the right: no blend mode or filter needed).
+   - band by the number: same height as the name/number row, flush with the right edge.
+   - band low on the left: mirrored left-right so it is dense on the left, from the left edge of the box, covering the bottom 41% of the photo (58%..99% down it) and 2.8x its width, behind the photo.
+   The bands are plain images now (no blend), so stacking contexts do not matter. */
+.herobox { overflow-x: clip; }
+.hero-photo { position: relative; z-index: 1; }
+.herobox::before { content: ""; position: absolute; z-index: 0; left: 0; bottom: 0; width: 55%; aspect-ratio: 2204 / 568; background: url("img/overview/speedlines.png") center / 100% 100% no-repeat; transform: scaleX(-1); pointer-events: none; }
+.hero-head { position: relative; }
+.hero-head::before { content: ""; position: absolute; z-index: 0; top: -6%; bottom: -6%; right: calc(-1 * clamp(2.2rem, 4.2vw, 3.6rem)); aspect-ratio: 2204 / 568; background: url("img/overview/speedlines.png") center / 100% 100% no-repeat; pointer-events: none; }
+.hero-head > * { position: relative; z-index: 1; }
+@media (max-width: 640px) { .herobox::before, .hero-head::before { display: none; } }
+/* The concrete texture replaces the white glows on the team-coloured pages too. */
+body.team-page { background-image: none; }
+.pager { z-index: 2; } /* the arrows stay above the speed lines that now reach the right edge of the box */
+body.team-page::before { mix-blend-mode: multiply; opacity: .45; } /* the texture is light grey: hard-light at 10% is invisible on a saturated team colour, so there it multiplies instead */
+body.overview-page .ov-lower h2 { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .25); }
+
+/* Driver page: more vertical air between name, team, licence points, stats and the filter buttons. */
+.hero-head { row-gap: .8rem; }
+.hero-team { margin-top: clamp(.8rem, 1.6vw, 1.3rem); }
+.hero-licence { margin-top: clamp(1.3rem, 3.4vw, 2.6rem); }
+.hero-stats { margin-top: clamp(1.3rem, 3.4vw, 2.6rem); }
+.hero-info { padding-bottom: clamp(1.6rem, 4.5vw, 3.2rem); }
+body.team-page .lower { padding-top: clamp(1.4rem, 2.4vw, 2rem); }
+
+.hero-stats { justify-content: flex-end; margin-right: calc(-1 * clamp(2.2rem, 4.2vw, 3.6rem) + .5rem); } /* cases / penalized / reprimand / no sanction run to the right edge of the box, past the column the arrow sits in */
+
+/* Loading: reserve the space the data will take, so nothing jumps when it arrives; the texture fades in instead of popping. */
+.ov-stats { min-height: calc(2 * clamp(2.31rem, 5.67vw, 5.04rem) + .4rem); }
+#drivers:empty { min-height: 26rem; }
+.dcards:empty { min-height: 30rem; }
+@keyframes tex-in { from { opacity: 0; } }
+body::before { animation: tex-in .9s ease-out; }
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+
+/* Entrance animations. All "backwards" fills (never "both"), so a finished animation leaves nothing behind. Short, and off with "reduce motion". */
+@keyframes rise-in { from { opacity: 0; transform: translateY(.9rem); } }
+@keyframes lines-in { from { opacity: 0; transform: translateX(3rem); } }
+@keyframes lines-in-mirror { from { opacity: 0; transform: scaleX(-1) translateX(3rem); } } /* the low-left band is mirrored: keep the flip while it slides */
+/* Overview: title lines, speed lines, totals, then the driver rows one after another. */
+.ov-f1 { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) backwards; }
+.ov-sr { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .08s backwards; }
+.ov-season { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .16s backwards; }
+.ov-title::before { animation: lines-in .8s cubic-bezier(.2, .7, .2, 1) .1s backwards; }
+.ov-stats { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .3s backwards; }
+#drivers.is-entering tbody tr { animation: rise-in .45s cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: .55s; }
+#drivers.is-entering tbody tr:nth-child(1) { animation-delay: 0.55s; }
+#drivers.is-entering tbody tr:nth-child(2) { animation-delay: 0.58s; }
+#drivers.is-entering tbody tr:nth-child(3) { animation-delay: 0.61s; }
+#drivers.is-entering tbody tr:nth-child(4) { animation-delay: 0.64s; }
+#drivers.is-entering tbody tr:nth-child(5) { animation-delay: 0.67s; }
+#drivers.is-entering tbody tr:nth-child(6) { animation-delay: 0.7s; }
+#drivers.is-entering tbody tr:nth-child(7) { animation-delay: 0.73s; }
+#drivers.is-entering tbody tr:nth-child(8) { animation-delay: 0.76s; }
+#drivers.is-entering tbody tr:nth-child(9) { animation-delay: 0.79s; }
+#drivers.is-entering tbody tr:nth-child(10) { animation-delay: 0.82s; }
+#drivers.is-entering tbody tr:nth-child(11) { animation-delay: 0.85s; }
+#drivers.is-entering tbody tr:nth-child(12) { animation-delay: 0.88s; }
+#drivers.is-entering tbody tr:nth-child(13) { animation-delay: 0.91s; }
+#drivers.is-entering tbody tr:nth-child(14) { animation-delay: 0.94s; }
+#drivers.is-entering tbody tr:nth-child(15) { animation-delay: 0.97s; }
+#drivers.is-entering tbody tr:nth-child(16) { animation-delay: 1s; }
+/* Drivers page: the cards rise in a short cascade. */
+.dcard { animation: rise-in .5s cubic-bezier(.2, .7, .2, 1) backwards; }
+.dcard:nth-child(1) { animation-delay: 0s; }
+.dcard:nth-child(2) { animation-delay: 0.04s; }
+.dcard:nth-child(3) { animation-delay: 0.08s; }
+.dcard:nth-child(4) { animation-delay: 0.12s; }
+.dcard:nth-child(5) { animation-delay: 0.16s; }
+.dcard:nth-child(6) { animation-delay: 0.2s; }
+.dcard:nth-child(7) { animation-delay: 0.24s; }
+.dcard:nth-child(8) { animation-delay: 0.28s; }
+.dcard:nth-child(9) { animation-delay: 0.32s; }
+.dcard:nth-child(10) { animation-delay: 0.36s; }
+.dcard:nth-child(11) { animation-delay: 0.4s; }
+.dcard:nth-child(12) { animation-delay: 0.44s; }
+.dcard:nth-child(13) { animation-delay: 0.48s; }
+.dcard:nth-child(14) { animation-delay: 0.52s; }
+.dcard:nth-child(15) { animation-delay: 0.56s; }
+.dcard:nth-child(16) { animation-delay: 0.6s; }
+.dcard:nth-child(17) { animation-delay: 0.64s; }
+.dcard:nth-child(18) { animation-delay: 0.68s; }
+.dcard:nth-child(19) { animation-delay: 0.72s; }
+.dcard:nth-child(20) { animation-delay: 0.76s; }
+.dcard:nth-child(21) { animation-delay: 0.8s; }
+.dcard:nth-child(22) { animation-delay: 0.84s; }
+.dcard:nth-child(23) { animation-delay: 0.88s; }
+.dcard:nth-child(24) { animation-delay: 0.92s; }
+/* Driver page: name, team, licence points and totals rise in turn; the photo slides up as it fades in; the speed lines slide in from their side. */
+.hero-info { animation: none; }
+.hero-info > * { animation: rise-in .55s cubic-bezier(.2, .7, .2, 1) backwards; }
+.hero-head { animation-delay: .05s; } .hero-team { animation-delay: .12s; } .hero-licence { animation-delay: .19s; } .hero-stats { animation-delay: .26s; }
+.hero-photo { transform: translateY(1rem); transition: opacity .35s ease-out, transform .55s cubic-bezier(.2, .7, .2, 1); }
+.hero-photo.loaded { transform: none; }
+.hero-head::before { animation: lines-in .8s cubic-bezier(.2, .7, .2, 1) .15s backwards; }
+.herobox::before { animation: lines-in-mirror .9s cubic-bezier(.2, .7, .2, 1) .2s backwards; }
+@media (prefers-reduced-motion: reduce) {
+  .ov-f1, .ov-sr, .ov-season, .ov-stats, .ov-title::before, #drivers.is-entering tbody tr, .dcard, .hero-info > *, .hero-head::before, .herobox::before { animation: none; }
+  .hero-photo { transform: none; transition: none; }
+}
