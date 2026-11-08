@@ -435,7 +435,9 @@ body::before { animation: tex-in .9s ease-out; }
 .hero-photo { transform: translateY(1rem); transition: opacity .35s ease-out, transform .55s cubic-bezier(.2, .7, .2, 1); }
 .hero-photo.loaded { transform: none; }
 .hero-head::before { animation: lines-in .8s cubic-bezier(.2, .7, .2, 1) .15s backwards; }
-.herobox::before { animation: lines-in-mirror .9s cubic-bezier(.2, .7, .2, 1) .2s backwards; }
+.herobox::before { animation: lines-in-mirror .8s cubic-bezier(.2, .7, .2, 1) .15s backwards; } /* same duration and delay as the band by the name */
+/* Both bands start together, when the header appears: the low-left band belongs to the box (it exists before the data arrives), so it stays hidden until the header (.hero-head, where the other band lives) is in the page. */
+.herobox:not(:has(.hero-head))::before { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .ov-f1, .ov-sr, .ov-season, .ov-stats, .ov-title::before, #drivers.is-entering tbody tr, .dcard, .hero-info > *, .hero-head::before, .herobox::before { animation: none; }
   .hero-photo { transform: none; transition: none; }
