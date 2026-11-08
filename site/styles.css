@@ -440,3 +440,71 @@ body::before { animation: tex-in .9s ease-out; }
   .ov-f1, .ov-sr, .ov-season, .ov-stats, .ov-title::before, #drivers.is-entering tbody tr, .dcard, .hero-info > *, .hero-head::before, .herobox::before { animation: none; }
   .hero-photo { transform: none; transition: none; }
 }
+
+/* Cases page: the filters are centred, like the type buttons under them. */
+body:has(#filters) .filters { justify-content: center; margin: 1.2rem 0 .8rem; }
+body:has(#filters) .filters label { align-items: center; }
+
+/* Cases page entrance: title and chart first (the bars grow, left to right), then the filters, the buttons and the table rows. First draw only (.is-entering), off with "reduce motion". */
+@keyframes bar-grow { from { height: 0; } }
+@keyframes fade-only { from { opacity: 0; } }
+body:has(#gpChart) main > h1 { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) backwards; }
+body:has(#gpChart) main > h2:first-of-type { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .06s backwards; }
+#gpChart.is-entering .gpline { animation: fade-only .5s ease-out .15s backwards; }
+#gpChart.is-entering .gpcol { animation: rise-in .5s cubic-bezier(.2, .7, .2, 1) backwards; }
+#gpChart.is-entering .seg { animation: bar-grow .75s cubic-bezier(.2, .7, .2, 1) backwards; }
+#gpChart.is-entering .gpcol:nth-child(2), #gpChart.is-entering .gpcol:nth-child(2) .seg { animation-delay: 0.2s; }
+#gpChart.is-entering .gpcol:nth-child(3), #gpChart.is-entering .gpcol:nth-child(3) .seg { animation-delay: 0.23s; }
+#gpChart.is-entering .gpcol:nth-child(4), #gpChart.is-entering .gpcol:nth-child(4) .seg { animation-delay: 0.26s; }
+#gpChart.is-entering .gpcol:nth-child(5), #gpChart.is-entering .gpcol:nth-child(5) .seg { animation-delay: 0.29s; }
+#gpChart.is-entering .gpcol:nth-child(6), #gpChart.is-entering .gpcol:nth-child(6) .seg { animation-delay: 0.32s; }
+#gpChart.is-entering .gpcol:nth-child(7), #gpChart.is-entering .gpcol:nth-child(7) .seg { animation-delay: 0.35s; }
+#gpChart.is-entering .gpcol:nth-child(8), #gpChart.is-entering .gpcol:nth-child(8) .seg { animation-delay: 0.38s; }
+#gpChart.is-entering .gpcol:nth-child(9), #gpChart.is-entering .gpcol:nth-child(9) .seg { animation-delay: 0.41s; }
+#gpChart.is-entering .gpcol:nth-child(10), #gpChart.is-entering .gpcol:nth-child(10) .seg { animation-delay: 0.44s; }
+#gpChart.is-entering .gpcol:nth-child(11), #gpChart.is-entering .gpcol:nth-child(11) .seg { animation-delay: 0.47s; }
+#gpChart.is-entering .gpcol:nth-child(12), #gpChart.is-entering .gpcol:nth-child(12) .seg { animation-delay: 0.5s; }
+#gpChart.is-entering .gpcol:nth-child(13), #gpChart.is-entering .gpcol:nth-child(13) .seg { animation-delay: 0.53s; }
+#gpChart.is-entering .gpcol:nth-child(14), #gpChart.is-entering .gpcol:nth-child(14) .seg { animation-delay: 0.56s; }
+#gpChart.is-entering .gpcol:nth-child(15), #gpChart.is-entering .gpcol:nth-child(15) .seg { animation-delay: 0.59s; }
+#gpChart.is-entering .gpcol:nth-child(16), #gpChart.is-entering .gpcol:nth-child(16) .seg { animation-delay: 0.62s; }
+#gpChart.is-entering .gpcol:nth-child(17), #gpChart.is-entering .gpcol:nth-child(17) .seg { animation-delay: 0.65s; }
+#gpChart.is-entering .gpcol:nth-child(18), #gpChart.is-entering .gpcol:nth-child(18) .seg { animation-delay: 0.68s; }
+#gpChart.is-entering .gpcol:nth-child(19), #gpChart.is-entering .gpcol:nth-child(19) .seg { animation-delay: 0.71s; }
+#gpChart.is-entering .gpcol:nth-child(20), #gpChart.is-entering .gpcol:nth-child(20) .seg { animation-delay: 0.74s; }
+#gpChart.is-entering .gpcol:nth-child(21), #gpChart.is-entering .gpcol:nth-child(21) .seg { animation-delay: 0.77s; }
+#gpChart.is-entering .gpcol:nth-child(22), #gpChart.is-entering .gpcol:nth-child(22) .seg { animation-delay: 0.8s; }
+#gpChart.is-entering .gpcol:nth-child(23), #gpChart.is-entering .gpcol:nth-child(23) .seg { animation-delay: 0.83s; }
+#gpChart.is-entering .gpcol:nth-child(24), #gpChart.is-entering .gpcol:nth-child(24) .seg { animation-delay: 0.86s; }
+#gpChart.is-entering .gpcol:nth-child(25), #gpChart.is-entering .gpcol:nth-child(25) .seg { animation-delay: 0.89s; }
+#gpChart.is-entering .gpcol:nth-child(26), #gpChart.is-entering .gpcol:nth-child(26) .seg { animation-delay: 0.92s; }
+#gpChart.is-entering .gpcol:nth-child(27), #gpChart.is-entering .gpcol:nth-child(27) .seg { animation-delay: 0.95s; }
+#gpChart.is-entering .gpcol:nth-child(28), #gpChart.is-entering .gpcol:nth-child(28) .seg { animation-delay: 0.98s; }
+#gpChart.is-entering .gpcol:nth-child(29), #gpChart.is-entering .gpcol:nth-child(29) .seg { animation-delay: 1.01s; }
+#gpChart.is-entering .gpcol:nth-child(30), #gpChart.is-entering .gpcol:nth-child(30) .seg { animation-delay: 1.04s; }
+#gpChart.is-entering .gpcol:nth-child(31), #gpChart.is-entering .gpcol:nth-child(31) .seg { animation-delay: 1.07s; }
+body:has(#gpChart) .legend { animation: fade-only .5s ease-out .7s backwards; }
+body:has(#gpChart) #filters { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .6s backwards; }
+body:has(#gpChart) #typeBox { animation: rise-in .6s cubic-bezier(.2, .7, .2, 1) .5s backwards; }
+#cases.is-entering tbody tr, #types.is-entering tbody tr { animation: rise-in .45s cubic-bezier(.2, .7, .2, 1) 1s backwards; }
+#cases.is-entering tbody tr:nth-child(1), #types.is-entering tbody tr:nth-child(1) { animation-delay: 0.7s; }
+#cases.is-entering tbody tr:nth-child(2), #types.is-entering tbody tr:nth-child(2) { animation-delay: 0.73s; }
+#cases.is-entering tbody tr:nth-child(3), #types.is-entering tbody tr:nth-child(3) { animation-delay: 0.76s; }
+#cases.is-entering tbody tr:nth-child(4), #types.is-entering tbody tr:nth-child(4) { animation-delay: 0.79s; }
+#cases.is-entering tbody tr:nth-child(5), #types.is-entering tbody tr:nth-child(5) { animation-delay: 0.82s; }
+#cases.is-entering tbody tr:nth-child(6), #types.is-entering tbody tr:nth-child(6) { animation-delay: 0.85s; }
+#cases.is-entering tbody tr:nth-child(7), #types.is-entering tbody tr:nth-child(7) { animation-delay: 0.88s; }
+#cases.is-entering tbody tr:nth-child(8), #types.is-entering tbody tr:nth-child(8) { animation-delay: 0.91s; }
+#cases.is-entering tbody tr:nth-child(9), #types.is-entering tbody tr:nth-child(9) { animation-delay: 0.94s; }
+#cases.is-entering tbody tr:nth-child(10), #types.is-entering tbody tr:nth-child(10) { animation-delay: 0.97s; }
+#cases.is-entering tbody tr:nth-child(11), #types.is-entering tbody tr:nth-child(11) { animation-delay: 1s; }
+#cases.is-entering tbody tr:nth-child(12), #types.is-entering tbody tr:nth-child(12) { animation-delay: 1.03s; }
+#cases.is-entering tbody tr:nth-child(13), #types.is-entering tbody tr:nth-child(13) { animation-delay: 1.06s; }
+#cases.is-entering tbody tr:nth-child(14), #types.is-entering tbody tr:nth-child(14) { animation-delay: 1.09s; }
+@media (prefers-reduced-motion: reduce) {
+  body:has(#gpChart) main > h1, body:has(#gpChart) main > h2:first-of-type, #gpChart.is-entering .gpline, #gpChart.is-entering .gpcol, #gpChart.is-entering .seg, body:has(#gpChart) .legend, body:has(#gpChart) #filters, body:has(#gpChart) #typeBox, #cases.is-entering tbody tr, #types.is-entering tbody tr { animation: none; }
+}
+
+/* Grands Prix with no data yet (announced, or without processed documents) look exactly like the columns left out when one Grand Prix is selected: the whole column at 25%, same type as the others. */
+.gpcol.off { opacity: .25; }
+.gpcol.off .gpflag, .gpcol.off .gpcode { opacity: 1; }

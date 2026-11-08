@@ -94,7 +94,10 @@ try {
     const row = d.byGrandPrix.find((r) => r.grandPrix === gpSel);
     if (!row || !row.cases) gpSel = null; // e.g. the type filter left that Grand Prix empty
     const inGp = (x) => !gpSel || x.grandPrix === gpSel;
-    gpChart(document.getElementById('gpChart'), d.byGrandPrix, { selected: gpSel, onSelect: (gp) => { gpSel = gp === gpSel ? null : gp; drawGp(); } });
+    // The bars grow in on the first draw only (a click or a filter redraws the chart and must not replay it).
+    const chartBox = document.getElementById('gpChart');
+    if (!chartBox.dataset.entered) { chartBox.dataset.entered = '1'; chartBox.classList.add('is-entering'); setTimeout(() => chartBox.classList.remove('is-entering'), 2200); }
+    gpChart(chartBox, d.byGrandPrix, { selected: gpSel, onSelect: (gp) => { gpSel = gp === gpSel ? null : gp; drawGp(); } });
 
     const tl = d.pointsTimeline.filter(inGp);
     if (!tl.length) document.getElementById('points').innerHTML = `<div class="tablewrap"><div class="empty">${esc(t('driver.pointsNone'))}</div></div>`;

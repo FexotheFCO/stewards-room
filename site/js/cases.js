@@ -3,6 +3,8 @@ import { gpChart } from '../charts.js';
 layout('cases.html');
 document.title = `Stewards' Room · ${t('nav.cases')}`;
 
+// The entrance animations (chart bars, table rows) play on the first draw only: a filter click redraws them and must not replay.
+const enter = (el) => { if (!el || el.dataset.entered) return; el.dataset.entered = '1'; el.classList.add('is-entering'); setTimeout(() => el.classList.remove('is-entering'), 2200); };
 // [query param, label key, facet name, label for each value]. The infringement type is handled by the buttons above.
 const FILTERS = [
   ['gp', 'cases.filter.gp', 'grandsPrix', (v) => tData('gp', v)],
@@ -38,6 +40,7 @@ try {
     if (mine !== seq) return;
     // Clicking a Grand Prix in the chart sets the Grand Prix filter above (clicking it again clears it): one or all.
     const gpSelect = box.querySelector('select[data-k="gp"]');
+    enter(document.getElementById('gpChart')); enter(document.getElementById('cases'));
     gpChart(document.getElementById('gpChart'), byGp, { selected: gpSelect.value || null, onSelect: (gp) => { gpSelect.value = gpSelect.value === gp ? '' : gp; load().catch(showError); } });
     document.getElementById('count').textContent = t('common.casesCount', { n: rows.length });
     table(document.getElementById('cases'), caseColumns({ withDriver: true }), rows, { sortKey: 'grandPrix', desc: false, className: 'list dense' });
@@ -51,6 +54,7 @@ try {
 try {
   const rows = (await api('/types')).map((r) => ({ ...r, pct: r.cases ? Math.round((100 * r.withPoints) / r.cases) : 0 }));
   const sum = (k) => rows.reduce((a, r) => a + r[k], 0);
+  enter(document.getElementById('types'));
   table(document.getElementById('types'), [
     { key: 'type', label: t('col.type'), sort: (r) => t('type.' + r.type), html: (r) => `<a href="cases.html?types=${encodeURIComponent(r.type)}">${esc(t('type.' + r.type))}</a>${synBadge(r)}` },
     { key: 'cases', label: t('col.cases'), num: true },

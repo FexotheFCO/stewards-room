@@ -16,8 +16,6 @@
 <header class="top" id="top"></header>
 <main>
   <h1 data-i18n="cases.title"></h1>
-  <div class="typebox" id="typeBox"></div>
-  <div class="filters" id="filters"></div>
   <h2 data-i18n="chart.title"></h2>
   <div id="gpChart"></div>
   <div class="legend">
@@ -25,11 +23,13 @@
     <span><i style="background:var(--rep)"></i><span data-i18n="outcome.reprimand"></span></span>
     <span><i style="background:var(--none)"></i><span data-i18n="outcome.none"></span></span>
   </div>
+  <div class="typebox" id="typeBox"></div>
+  <div class="filters" id="filters"></div>
+  <p class="muted" id="count"></p>
+  <div id="cases"></div>
   <h2 data-i18n="types.title"></h2>
   <p class="muted" data-i18n="types.note"></p>
   <div id="types"></div>
-  <p class="muted" id="count"></p>
-  <div id="cases"></div>
 </main>
 <script type="module" src="js/cases.js"></script>
 </body>
