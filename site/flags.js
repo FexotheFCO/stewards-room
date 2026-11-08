@@ -37,7 +37,7 @@ export const GP_INFO = Object.freeze({
   'Singapore Grand Prix': { cc: 'sg', code: 'SGP' },
   'United States Grand Prix': { cc: 'us', code: 'USA' },
   'Mexico City Grand Prix': { cc: 'mx', code: 'MEX' },
-  'Sao Paulo Grand Prix': { cc: 'br', code: 'BRA' },
+  'São Paulo Grand Prix': { cc: 'br', code: 'BRA' }, // the FIA's spelling (with the tilde)
   'Las Vegas Grand Prix': { cc: 'us', code: 'LVS' },
   'Qatar Grand Prix': { cc: 'qa', code: 'QAT' },
   'Abu Dhabi Grand Prix': { cc: 'ae', code: 'ABU' },
@@ -71,6 +71,7 @@ export const DRIVER_COUNTRY = Object.freeze({
   'Oliver Bearman': 'gb',
   'Oscar Piastri': 'au',
   'Pierre Gasly': 'fr',
+  'Rafael Camara': 'br',
   'Sergio Pérez': 'mx',
   'Valtteri Bottas': 'fi',
   'Yuki Tsunoda': 'jp',
