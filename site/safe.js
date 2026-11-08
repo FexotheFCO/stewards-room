@@ -42,10 +42,24 @@ export const avatarHtml = (profile, big = false) => {
   return `<span class="${cls} ph" style="border-color:${colour}">${label}</span>`;
 };
 
-/** Driver cut-out photo (no ring) for the overview list. Same validation as avatarHtml; empty spacer without a photo. */
+/** Our own tall silhouette (same shape as the portraits) for the big slots: the driver header and the Drivers cards. */
+export const SILHOUETTE = 'img/silhouette.png';
+
+/**
+ * F1's own picture for a driver with no photo (a new or reserve driver with no profile): the grey bust its CDN serves
+ * whenever a photo does not exist (it is what Lindblad's headshot is). Every F1 photo URL already carries the
+ * `d_driver_fallback_image.png` default; pointing it at a path that does not exist makes the CDN answer with that default,
+ * in any size from 1col to 8col like a real headshot. Fixed value, never built from data. Only head and shoulders, so it is
+ * used for the small list picture; the big slots use SILHOUETTE, which is tall.
+ */
+export const FALLBACK_PROFILE = Object.freeze({
+  photoUrl: 'https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/X/NONE/none.png.transform/1col/image.png',
+});
+
+/** Driver cut-out photo (no ring) for the overview list. Same validation as avatarHtml; F1's default bust without a photo. */
 export const photoHtml = (profile) => {
-  const src = photoSrc(profile, 2);
-  return src ? `<img class="drv-photo" src="${src}" alt="" loading="lazy" width="44" height="44">` : '<span class="drv-photo"></span>';
+  const src = photoSrc(profile, 2) ?? remotePhoto(FALLBACK_PROFILE, 2);
+  return `<img class="drv-photo" src="${src}" alt="" loading="lazy" width="44" height="44">`;
 };
 
 /** Text without accents ("Sergio Pérez" -> "Sergio Perez", "Hülkenberg" -> "Hulkenberg"). For the display font of the

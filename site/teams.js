@@ -1,5 +1,5 @@
 // Team look for the overview list: row colour and logo. Pure helpers, no DOM access (unit-tested).
-import { esc, localPhoto, remotePhoto } from './safe.js';
+import { esc, localPhoto, remotePhoto, SILHOUETTE } from './safe.js';
 
 // Team names come in several spellings ("Cadillac" in the driver profile, "Cadillac Formula 1 Team" in the dataset).
 // First match wins. The slug is the file name under /img/teams/ (<slug>.svg colour logo, <slug>-white.svg white logo).
@@ -55,14 +55,16 @@ export function tallPhoto(profile, width = 640) {
  *  1. the local file img/drivers-large/<slug>.webp (git-ignored, only on the developer's machine),
  *  2. F1's full-body portrait from its CDN (what the published site uses),
  *  3. the square headshot from the CDN, flagged `remote` so the CSS lays it out for a square picture.
- * `width` is for 2 (320 for small cards, 640 for the header); `cols` (1..8) for 3. Returns { src, remote } or null.
+ * 4. Without any photo (a new or reserve driver with no profile) our tall silhouette, in the same layout as 1 and 2.
+ *    (F1's own default bust is only head and shoulders: it is used for the small list picture, see photoHtml.)
+ * `width` is for 2 (320 for small cards, 640 for the header); `cols` (1..8) for 3. Always returns { src, remote }.
  */
 export function bigPhoto(profile, slug, { width = 640, cols = 8 } = {}) {
   if (localPhoto(profile) && /^[a-z0-9-]+$/.test(slug ?? '')) return { src: `img/drivers-large/${slug}.webp`, remote: false };
   const tall = tallPhoto(profile, width);
   if (tall) return { src: tall, remote: false };
   const square = remotePhoto(profile, cols);
-  return square ? { src: square, remote: true } : null;
+  return square ? { src: square, remote: true } : { src: SILHOUETTE, remote: false };
 }
 
 /** Short label for a driver: everything after the first word ("Franco Colapinto" -> "Colapinto"). */
